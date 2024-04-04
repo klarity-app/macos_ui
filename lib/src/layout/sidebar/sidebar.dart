@@ -19,6 +19,7 @@ class Sidebar {
     this.maxWidth = 400.0,
     this.startWidth,
     this.padding = EdgeInsets.zero,
+    this.paddingBottom = const EdgeInsets.all(16),
     this.windowBreakpoint = 556.0,
     this.top,
     this.bottom,
@@ -93,7 +94,13 @@ class Sidebar {
   /// placed inside this padding.
   ///
   /// Defaults to `EdgeInsets.zero`.
-  final EdgeInsets? padding;
+  final EdgeInsets padding;
+
+  /// Empty space to inscribe in the sidebar for bottomWidget. The [bottomWidget], is
+  /// placed inside this padding.
+  ///
+  /// Defaults to `EdgeInsets.all(16)`.
+  final EdgeInsets paddingBottom;
 
   /// Specifies the width of the window at which this [Sidebar] will be hidden.
   final double windowBreakpoint;

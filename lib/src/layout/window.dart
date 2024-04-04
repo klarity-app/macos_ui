@@ -284,7 +284,7 @@ class _MacosWindowState extends State<MacosWindow> {
                                 child: MacosScrollbar(
                                   controller: _sidebarScrollController,
                                   child: Padding(
-                                    padding: sidebar.padding ?? EdgeInsets.zero,
+                                    padding: sidebar.padding,
                                     child: sidebar.builder(
                                       context,
                                       _sidebarScrollController,
@@ -333,7 +333,7 @@ class _MacosWindowState extends State<MacosWindow> {
                                   child: MacosScrollbar(
                                     controller: _sidebarScrollController,
                                     child: Padding(
-                                      padding: sidebar.padding ?? EdgeInsets.zero,
+                                      padding: sidebar.padding,
                                       child: sidebar.builder(
                                         context,
                                         _sidebarScrollController,
@@ -343,7 +343,7 @@ class _MacosWindowState extends State<MacosWindow> {
                                 ),
                                 if (sidebar.bottom != null && constraints.maxHeight > 141)
                                   Padding(
-                                    padding: sidebar.padding ?? const EdgeInsets.all(16.0),
+                                    padding: sidebar.paddingBottom,
                                     child: sidebar.bottom!,
                                   ),
                               ],
@@ -480,7 +480,7 @@ class _MacosWindowState extends State<MacosWindow> {
                           child: MacosScrollbar(
                             controller: _endSidebarScrollController,
                             child: Padding(
-                              padding: endSidebar.padding ?? EdgeInsets.zero,
+                              padding: endSidebar.paddingBottom,
                               child: endSidebar.builder(
                                 context,
                                 _endSidebarScrollController,
@@ -490,7 +490,7 @@ class _MacosWindowState extends State<MacosWindow> {
                         ),
                         if (endSidebar.bottom != null)
                           Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: endSidebar.paddingBottom,
                             child: endSidebar.bottom!,
                           ),
                       ],
