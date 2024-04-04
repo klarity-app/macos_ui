@@ -93,7 +93,7 @@ class Sidebar {
   /// placed inside this padding.
   ///
   /// Defaults to `EdgeInsets.zero`.
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   /// Specifies the width of the window at which this [Sidebar] will be hidden.
   final double windowBreakpoint;
