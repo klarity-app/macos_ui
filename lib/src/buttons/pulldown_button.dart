@@ -639,6 +639,7 @@ class MacosPulldownButton extends StatefulWidget {
     this.autofocus = false,
     this.alignment = AlignmentDirectional.centerStart,
     this.menuAlignment = PulldownMenuAlignment.left,
+    this.borderRadius = _kBorderRadius,
   })  : assert(itemHeight == null || itemHeight >= _kMenuItemHeight),
         assert((title != null || icon != null) && !(title != null && icon != null),
             "There should be either a title or an icon argument provided, and not both at at the same time.");
@@ -713,6 +714,11 @@ class MacosPulldownButton extends StatefulWidget {
   ///
   /// Defaults to [PulldownMenuAlignment.left].
   final PulldownMenuAlignment menuAlignment;
+
+  /// The border radius of the button.
+  ///
+  /// Defaults to [_kBorderRadius].
+  final BorderRadius borderRadius;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -879,14 +885,13 @@ class _MacosPulldownButtonState extends State<MacosPulldownButton> with WidgetsB
   @override
   Widget build(BuildContext context) {
     final buttonHeight = _hasIcon ? 28.0 : 20.0;
-    final borderRadius = _hasIcon ? const BorderRadius.all(Radius.circular(7.0)) : _kBorderRadius;
     final buttonStyles = _getButtonStyles(_pullDownButtonState, _enabled, _hasIcon, context);
 
     Widget result = Container(
       decoration: _showHighlight
           ? BoxDecoration(
               color: MacosColors.findHighlightColor,
-              borderRadius: borderRadius,
+              borderRadius: widget.borderRadius,
             )
           : BoxDecoration(
               boxShadow: [
@@ -899,7 +904,7 @@ class _MacosPulldownButtonState extends State<MacosPulldownButton> with WidgetsB
               ],
               border: Border.all(width: 0.5, color: buttonStyles.borderColor),
               color: buttonStyles.bgColor,
-              borderRadius: borderRadius,
+              borderRadius: widget.borderRadius,
             ),
       padding: const EdgeInsets.only(left: 8.0, right: 2.0),
       height: buttonHeight,
