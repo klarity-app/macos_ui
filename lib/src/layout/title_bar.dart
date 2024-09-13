@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:macos_ui/src/theme/macos_theme.dart';
 
@@ -82,27 +81,17 @@ class TitleBar extends StatelessWidget {
         style: theme.typography.headline.copyWith(
           fontSize: 10,
           fontWeight: FontWeight.w600,
-          color: theme.brightness.isDark
-              ? const Color(0xFFEAEAEA)
-              : const Color(0xFF4D4D4D),
+          color: theme.brightness.isDark ? const Color(0xFFEAEAEA) : const Color(0xFF4D4D4D),
         ),
         child: _title,
       );
     }
 
-    final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
-
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        padding: EdgeInsets.only(
-          left: !kIsWeb && isMacOS ? 70 : 0,
-        ),
-      ),
+      data: MediaQuery.of(context),
       child: ClipRect(
         child: BackdropFilter(
-          filter: decoration?.color?.opacity == 1
-              ? ImageFilter.blur()
-              : ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          filter: decoration?.color?.opacity == 1 ? ImageFilter.blur() : ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
           child: Container(
             alignment: alignment,
             padding: padding,
