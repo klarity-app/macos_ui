@@ -159,8 +159,7 @@ class ToolBar extends StatefulWidget with Diagnosticable {
     properties.add(DiagnosticsProperty<Alignment>('alignment', alignment));
     properties.add(DiagnosticsProperty<Widget>('title', title));
     properties.add(DoubleProperty('titleWidth', titleWidth));
-    properties
-        .add(DiagnosticsProperty<BoxDecoration>('decoration', decoration));
+    properties.add(DiagnosticsProperty<BoxDecoration>('decoration', decoration));
     properties.add(DiagnosticsProperty<EdgeInsets>('padding', padding));
     properties.add(DiagnosticsProperty<Widget>('leading', leading));
     properties.add(FlagProperty(
@@ -187,8 +186,7 @@ class _ToolBarState extends State<ToolBar> {
   @override
   void didUpdateWidget(ToolBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.actions != null &&
-        widget.actions!.length != oldWidget.actions!.length) {
+    if (widget.actions != null && widget.actions!.length != oldWidget.actions!.length) {
       overflowedActionsCount = 0;
     }
   }
@@ -240,9 +238,7 @@ class _ToolBarState extends State<ToolBar> {
     bool doAllItemsShowLabel = true;
     if (widget.actions != null && widget.actions!.isNotEmpty) {
       inToolbarActions = widget.actions ?? [];
-      overflowedActions = inToolbarActions
-          .sublist(inToolbarActions.length - overflowedActionsCount)
-          .toList();
+      overflowedActions = inToolbarActions.sublist(inToolbarActions.length - overflowedActionsCount).toList();
       // If all toolbar actions have labels shown below their icons,
       // reduce the overflow button's size as well.
       for (ToolbarItem item in widget.actions!) {
@@ -254,65 +250,56 @@ class _ToolBarState extends State<ToolBar> {
       }
     }
 
-    final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
-
-    return MediaQuery(
-      data: MediaQuery.of(context).copyWith(
-        padding: EdgeInsets.only(
-          left: !kIsWeb && isMacOS ? 70 : 0,
+    return _WallpaperTintedAreaOrBlurFilter(
+      enableWallpaperTintedArea: kIsWeb ? false : !widget.enableBlur,
+      isWidgetVisible: widget.allowWallpaperTintingOverrides,
+      backgroundColor: theme.canvasColor,
+      widgetOpacity: widget.decoration?.color?.opacity,
+      child: Container(
+        alignment: widget.alignment,
+        padding: widget.padding,
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: dividerColor)),
+        ).copyWith(
+          color: widget.decoration?.color,
+          image: widget.decoration?.image,
+          border: widget.decoration?.border,
+          borderRadius: widget.decoration?.borderRadius,
+          boxShadow: widget.decoration?.boxShadow,
+          gradient: widget.decoration?.gradient,
         ),
-      ),
-      child: _WallpaperTintedAreaOrBlurFilter(
-        enableWallpaperTintedArea: kIsWeb ? false : !widget.enableBlur,
-        isWidgetVisible: widget.allowWallpaperTintingOverrides,
-        backgroundColor: theme.canvasColor,
-        widgetOpacity: widget.decoration?.color?.opacity,
-        child: Container(
-          alignment: widget.alignment,
-          padding: widget.padding,
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: dividerColor)),
-          ).copyWith(
-            color: widget.decoration?.color,
-            image: widget.decoration?.image,
-            border: widget.decoration?.border,
-            borderRadius: widget.decoration?.borderRadius,
-            boxShadow: widget.decoration?.boxShadow,
-            gradient: widget.decoration?.gradient,
-          ),
-          child: NavigationToolbar(
-            middle: title,
-            centerMiddle: widget.centerTitle,
-            trailing: OverflowHandler(
-              overflowBreakpoint: overflowBreakpoint,
-              overflowWidget: ToolbarOverflowButton(
-                isDense: doAllItemsShowLabel,
-                overflowContentBuilder: (context) => ToolbarOverflowMenu(
-                  children: overflowedActions
-                      .map((action) => action.build(
-                            context,
-                            ToolbarItemDisplayMode.overflowed,
-                          ))
-                      .toList(),
-                ),
+        child: NavigationToolbar(
+          middle: title,
+          centerMiddle: widget.centerTitle,
+          trailing: OverflowHandler(
+            overflowBreakpoint: overflowBreakpoint,
+            overflowWidget: ToolbarOverflowButton(
+              isDense: doAllItemsShowLabel,
+              overflowContentBuilder: (context) => ToolbarOverflowMenu(
+                children: overflowedActions
+                    .map((action) => action.build(
+                          context,
+                          ToolbarItemDisplayMode.overflowed,
+                        ))
+                    .toList(),
               ),
-              children: inToolbarActions
-                  .map(
-                    (e) => e.build(context, ToolbarItemDisplayMode.inToolbar),
-                  )
-                  .toList(),
-              overflowChangedCallback: (hiddenItems) {
-                setState(() => overflowedActionsCount = hiddenItems.length);
-              },
             ),
-            middleSpacing: 8,
-            leading: SafeArea(
-              top: false,
-              right: false,
-              bottom: false,
-              left: !(scope?.isSidebarShown ?? false),
-              child: leading ?? const SizedBox.shrink(),
-            ),
+            children: inToolbarActions
+                .map(
+                  (e) => e.build(context, ToolbarItemDisplayMode.inToolbar),
+                )
+                .toList(),
+            overflowChangedCallback: (hiddenItems) {
+              setState(() => overflowedActionsCount = hiddenItems.length);
+            },
+          ),
+          middleSpacing: 8,
+          leading: SafeArea(
+            top: false,
+            right: false,
+            bottom: false,
+            left: !(scope?.isSidebarShown ?? false),
+            child: leading ?? const SizedBox.shrink(),
           ),
         ),
       ),
