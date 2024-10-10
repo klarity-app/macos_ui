@@ -13,6 +13,8 @@ class MacosDisclosureButton extends StatefulWidget {
     this.isPressed = false,
     this.mouseCursor = SystemMouseCursors.basic,
     this.onPressed,
+    this.pressedQuarterTurns = 1,
+    this.unpressedQuarterTurns = 3,
   });
 
   /// The callback that is called when the button is tapped.
@@ -33,6 +35,12 @@ class MacosDisclosureButton extends StatefulWidget {
   /// or inactive state (chevron pointing down).
   final bool isPressed;
 
+  /// The number of quarter turns when the button is pressed.
+  final int pressedQuarterTurns;
+
+  /// The number of quarter turns when the button is not pressed.
+  final int unpressedQuarterTurns;
+
   /// Whether the button is enabled or disabled. Buttons are disabled by default.
   ///
   /// To enable a button, set its [onPressed] property to a non-null value.
@@ -49,14 +57,15 @@ class MacosDisclosureButton extends StatefulWidget {
       value: enabled,
       ifFalse: 'disabled',
     ));
+    properties.add(IntProperty('pressedQuarterTurns', pressedQuarterTurns));
+    properties.add(IntProperty('unpressedQuarterTurns', unpressedQuarterTurns));
   }
 
   @override
   MacosDisclosureButtonState createState() => MacosDisclosureButtonState();
 }
 
-class MacosDisclosureButtonState extends State<MacosDisclosureButton>
-    with SingleTickerProviderStateMixin {
+class MacosDisclosureButtonState extends State<MacosDisclosureButton> with SingleTickerProviderStateMixin {
   static const Duration kFadeOutDuration = Duration(milliseconds: 10);
   static const Duration kFadeInDuration = Duration(milliseconds: 100);
   final Tween<double> _opacityTween = Tween<double>(begin: 1.0);
@@ -72,9 +81,7 @@ class MacosDisclosureButtonState extends State<MacosDisclosureButton>
       value: 0.0,
       vsync: this,
     );
-    _opacityAnimation = _animationController
-        .drive(CurveTween(curve: Curves.decelerate))
-        .drive(_opacityTween);
+    _opacityAnimation = _animationController.drive(CurveTween(curve: Curves.decelerate)).drive(_opacityTween);
     _setTween();
   }
 
@@ -133,17 +140,13 @@ class MacosDisclosureButtonState extends State<MacosDisclosureButton>
   Widget build(BuildContext context) {
     final bool enabled = widget.enabled;
     final brightness = MacosTheme.of(context).brightness;
-    final iconColor = brightness == Brightness.dark
-        ? CupertinoColors.white
-        : CupertinoColors.black;
+    final iconColor = brightness == Brightness.dark ? CupertinoColors.white : CupertinoColors.black;
 
     Color? fillColor;
     if (widget.fillColor != null) {
       fillColor = widget.fillColor;
     } else {
-      fillColor = brightness == Brightness.dark
-          ? const Color(0xff323232)
-          : const Color(0xffF4F5F5);
+      fillColor = brightness == Brightness.dark ? const Color(0xff323232) : const Color(0xffF4F5F5);
     }
 
     return MouseRegion(
@@ -180,7 +183,7 @@ class MacosDisclosureButtonState extends State<MacosDisclosureButton>
                       borderRadius: const BorderRadius.all(Radius.circular(7)),
                     ),
                     child: RotatedBox(
-                      quarterTurns: widget.isPressed ? 1 : 3,
+                      quarterTurns: widget.isPressed ? widget.pressedQuarterTurns : widget.unpressedQuarterTurns,
                       child: Icon(
                         CupertinoIcons.back,
                         size: 14,
